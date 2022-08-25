@@ -18,6 +18,7 @@ TextEditingController comment = TextEditingController();
 late List<String> diagnosesList = ['a'];
 late List<String> medicineList = ['b'];
 var id;
+//late List<String> newtu;
 
 class uploadRecord extends StatefulWidget {
   // const uploadRecord({Key? key}) : super(key: key);
@@ -39,7 +40,10 @@ void initState() {
 
 //CollectionReference users =  FirebaseFirestore.instance.collection('users/dnKK4bdwLbMlkJLZ6s75/record');
 int ddd = 2;
+
 Future<void> addUser() async {
+  diagnosesList.remove(diagnosesList[0]);
+  medicineList.remove(medicineList[0]);
   final query = await FirebaseFirestore.instance
       .collection('users')
       .where('idNumber', isEqualTo: id)
@@ -55,6 +59,11 @@ Future<void> addUser() async {
     return u
         .add({
           'illnessName': illness.text,
+          'diagnoses': diagnosesList,
+          'digimg': pictureList,
+          'medicine': medicineList,
+          'hospital':hospital.text,
+          'comment':comment.text
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

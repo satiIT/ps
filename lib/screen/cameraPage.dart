@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
-
-late String url;
+import 'package:ps/classes/picList.dart';
 
 class ImageUploads extends StatefulWidget {
   ImageUploads({Key? key}) : super(key: key);
@@ -18,6 +17,7 @@ class ImageUploads extends StatefulWidget {
 class _ImageUploadsState extends State<ImageUploads> {
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
+  String? _url;
 
   File? _photo;
   final ImagePicker _picker = ImagePicker();
@@ -58,8 +58,11 @@ class _ImageUploadsState extends State<ImageUploads> {
           .ref(destination)
           .child('file/');
       await ref.putFile(_photo!);
-      url = (await ref.getDownloadURL()).toString();
-      print(url);
+      _url = (await ref.getDownloadURL());
+      print(_url);
+      pictureList!.add(_url!);
+      Text(_url!);
+      print('pictureList');
     } catch (e) {
       //print('error occured');
     }

@@ -69,6 +69,7 @@ class _newreState extends State<newre> {
       //   'dffgfg':false
     }).then((value) {
       print("User Added");
+      
     }).catchError((error) => print("Failed to add user: $error"));
   }
 

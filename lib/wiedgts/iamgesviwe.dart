@@ -20,6 +20,6 @@ class imgview extends StatefulWidget {
 class _imgviewState extends State<imgview> {
   @override
   Widget build(BuildContext context) {
-    return Image.file(File(pictureList![index][1].path));
+    return Image.network(pictureList![index]) ;
   }
 }
