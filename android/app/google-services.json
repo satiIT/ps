@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "769420746617",
+    "firebase_url": "https://patient-mangement-system-default-rtdb.firebaseio.com",
+    "project_id": "patient-mangement-system",
+    "storage_bucket": "patient-mangement-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769420746617:android:6df52856c134598842d9a8",
+        "android_client_info": {
+          "package_name": "com.example.ps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769420746617-ucmucnpa46usstvebuor400rh3lcdrfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxRktA9ZYs4OKsQzEo2Yv-_ZSdmcWbsdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769420746617-ucmucnpa46usstvebuor400rh3lcdrfo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "769420746617-9m8i5gih29jiouqaksgm1jmivr5c6uqv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pm"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
