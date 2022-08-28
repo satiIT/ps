@@ -35,6 +35,7 @@ class _viewRecordState extends State<viewRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Record List")),
    body: Center(
      child: StreamBuilder<QuerySnapshot>(
         stream: _usersStream,

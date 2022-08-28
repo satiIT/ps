@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
+import 'package:ps/classes/diganosesClass.dart';
 import 'package:ps/classes/picList.dart';
 
 class ImageUploads extends StatefulWidget {
@@ -58,11 +59,19 @@ class _ImageUploadsState extends State<ImageUploads> {
           .ref(destination)
           .child('file/');
       await ref.putFile(_photo!);
-      _url = (await ref.getDownloadURL());
+
+      dignosesClass(url: await ref.getDownloadURL());
+      setState(() {
+        dignosesClass.pic.add(_url!);
+      });
       print(_url);
-      pictureList!.add(_url!);
-      Text(_url!);
-      print('pictureList');
+      //   pictureList!.add(_url!);
+      // dignosesClass(url: _url);
+    //  dignosesClass.pic!.add(_url!);
+      print(dignosesClass.pic);
+
+      // Text('_u');
+      print('pictureList![0]');
     } catch (e) {
       //print('error occured');
     }

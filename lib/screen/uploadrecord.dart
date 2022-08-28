@@ -5,10 +5,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ps/classes/diganosesClass.dart';
 import 'package:ps/classes/picList.dart';
 import 'package:ps/screen/cameraPage.dart';
 import 'package:ps/screen/newre.dart';
-import 'package:ps/wiedgts/iamgesviwe.dart';
+import 'package:ps/screen/record.dart';
+//import 'package:ps/widgets/iamgesviwe.dart';
 
 TextEditingController illness = TextEditingController();
 TextEditingController hospital = TextEditingController();
@@ -18,15 +20,17 @@ TextEditingController comment = TextEditingController();
 late List<String> diagnosesList = ['a'];
 late List<String> medicineList = ['b'];
 var id;
+
 //late List<String> newtu;
 
 class uploadRecord extends StatefulWidget {
   // const uploadRecord({Key? key}) : super(key: key);
 
-  uploadRecord(j) {
-    id = int.parse(j);
+  uploadRecord(int j) {
+    id = j;
     print(id);
   }
+
   @override
   State<uploadRecord> createState() => _uploadRecordState();
 }
@@ -44,6 +48,8 @@ int ddd = 2;
 Future<void> addUser() async {
   diagnosesList.remove(diagnosesList[0]);
   medicineList.remove(medicineList[0]);
+
+  dignosesClass.pic.remove(dignosesClass.pic[0]);
   final query = await FirebaseFirestore.instance
       .collection('users')
       .where('idNumber', isEqualTo: id)
@@ -56,17 +62,19 @@ Future<void> addUser() async {
         FirebaseFirestore.instance.collection('users/$documentId/record');
 
     // Call the user's CollectionReference to add a new user record
-    return u
-        .add({
-          'illnessName': illness.text,
-          'diagnoses': diagnosesList,
-          'digimg': pictureList,
-          'medicine': medicineList,
-          'hospital':hospital.text,
-          'comment':comment.text
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+    return u.add({
+      'illnessName': illness.text,
+      'diagnoses': diagnosesList,
+      'digimg': dignosesClass.pic,
+      'medicine': medicineList,
+      'hospital': hospital.text,
+      'comment': comment.text
+    }).then((value) {
+      print("User Added");
+      print('the class list is : ' + dignosesClass.pic[0]);
+    }).catchError((error) {
+      print("Failed to add user: $error");
+    });
   }
 }
 

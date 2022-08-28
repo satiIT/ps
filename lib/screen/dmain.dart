@@ -72,7 +72,7 @@ class _dMainState extends State<dMain> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  uploadRecord(id.text)));
+                            builder: (context) =>  uploadRecord(int.parse(id.text))));
                //     id.clear();
                   }
                 },

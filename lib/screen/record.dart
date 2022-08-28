@@ -24,29 +24,49 @@ class _recordState extends State<record> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(title: Text('Record View ')),
         body: StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Something went wrong');
-        }
+          stream: _usersStream,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
-        }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
 
-        return Center(
-          child: ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-                  document.data()! as Map<String, dynamic>;
-              return Center(
-                child: Text(data['illnessName']),
-              );
-            }).toList(),
-          ),
-        );
-      },
-    ));
+            return Center(
+              child: ListView(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text(data['illnessName']),
+                        data['digimg'] == null
+                            ? Text("No Imges ")
+                            : Container(
+                              height: 300,
+                              width: 200,
+                              child: ListView.builder(
+                                  itemCount: data['digimg'].length,
+                                  itemBuilder: (context, index) {
+                                    List s = data['digimg'];
+                                  //  print(s[0]);
+                                    return Image.network(s[index]);
+                                  },
+                                ),
+                            )
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            );
+          },
+        ));
   }
 }
