@@ -42,7 +42,7 @@ class _loginState extends State<login> {
   void c() async {
     await FirebaseFirestore.instance
         .collection('users')
-        .where('idNumber', isEqualTo: id)
+        .where('idNumber', isEqualTo: int.parse(id.text))
         .get()
         .then((value) {
       if (value.docs.isEmpty) {
