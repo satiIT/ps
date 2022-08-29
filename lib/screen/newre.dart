@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ps/screen/login.dart';
+
+import '../main.dart';
 
 TextEditingController fName = TextEditingController();
 TextEditingController sName = TextEditingController();
@@ -18,6 +23,7 @@ var dropdownValueb = "O+";
 DateTime? date = DateTime.now();
 bool s = false;
 late bool t;
+late bool v;
 
 class newre extends StatefulWidget {
   const newre({Key? key}) : super(key: key);
@@ -34,6 +40,20 @@ class _newreState extends State<newre> {
     ));
   }
 
+  Future<bool> internet(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        v = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      v = false;
+    }
+    return v;
+  }
+
   void c() async {
     await FirebaseFirestore.instance
         .collection('users')
@@ -42,10 +62,33 @@ class _newreState extends State<newre> {
         .then((value) {
       if (value.docs.isNotEmpty) {
         // return true;
-        addUser();
+        //  addUser();
 
         print('we have same id');
-      } else {
+        return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Data Error'),
+        content: SingleChildScrollView(
+          child:
+              Text('Same ID was found !'),
+            
+          
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Approve'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+      } else if(value.docs.isEmpty) {
         // return false;
         addUser();
       }
@@ -69,7 +112,31 @@ class _newreState extends State<newre> {
       //   'dffgfg':false
     }).then((value) {
       print("User Added");
-      
+        return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Scusesfull opration'),
+        content: SingleChildScrollView(
+          child:
+              Text('User Added scusesfully !'),
+            
+          
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('ok'),
+            onPressed: () {
+               Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>  const login()));
+            },
+          ),
+        ],
+      );
+    });
     }).catchError((error) => print("Failed to add user: $error"));
   }
 
@@ -286,7 +353,7 @@ class _newreState extends State<newre> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             if (fName.text.isEmpty) {
               showsnakbar("Enter FirstName");
             } else if (sName.text.isEmpty) {
@@ -302,7 +369,38 @@ class _newreState extends State<newre> {
             } else if (weight.text.isEmpty) {
               showsnakbar("Enter Weight");
             } else {
-              c();
+              bool s = await internet(context);
+              if (s == true) {
+                c();
+                setState(() {
+                  id.text;
+                });
+              }
+              if (s == false) {
+                print('show dig');
+                return showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Network Error'),
+                      content: SingleChildScrollView(
+                        child: Text('cheak your Enternet connecation'),
+                        //   Text('Would you like to approve of this message?'),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Approve'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              //  id.clear();
             }
           },
           tooltip: 'Add person',

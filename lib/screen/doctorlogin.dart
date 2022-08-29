@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/screen/dmain.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class doctorLogin extends StatefulWidget {
   const doctorLogin();
@@ -34,12 +35,12 @@ class _doctorLoginState extends State<doctorLogin> {
             child: TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'ID',
-                labelText: "ID",
+                hintText: 'Email',
+                labelText: "Email",
                 //           icon: Icon(Icons.person)
               ),
               controller: dID,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.emailAddress,
             ),
           ),
           Container(
@@ -55,19 +56,33 @@ class _doctorLoginState extends State<doctorLogin> {
                 //  icon: Icon(Icons.password)
               ),
               controller: password,
+              obscureText: true,
             ),
           ),
           SizedBox(
             width: 200,
             child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (dID.text.isEmpty) {
                     showsnakbar("Enter ID");
                   } else if (password.text.isEmpty) {
                     showsnakbar("Enter password");
                   } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const dMain()));
+                    try {
+                      final credential = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: dID.text, password: password.text);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const dMain()));
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        print('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        print('Wrong password provided for that user.');
+                      }
+                    }
                     //       dID.clear();
                     password.clear();
                   }

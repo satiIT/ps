@@ -5,7 +5,7 @@ import 'package:ps/screen/viewprofile.dart';
 import '/screen/newre.dart';
 import '/screen/ptabs.dart';
 import 'doctorlogin.dart';
- 
+
 late bool c;
 
 class login extends StatefulWidget {
@@ -25,23 +25,6 @@ Future<bool> internet(BuildContext context) async {
   } on SocketException catch (_) {
     print('not connected');
     c = false;
-          AlertDialog( title: const Text('AlertDialog Title'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: const <Widget>[
-              Text('This is a demo alert dialog.'),
-              Text('Would you like to approve of this message?'),
-            ],
-          ),
-        ), actions: <Widget>[
-          TextButton(
-            child: const Text('Approve'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],);
-    
   }
   return c;
 }
@@ -89,7 +72,7 @@ class _loginState extends State<login> {
               child: SizedBox(
                 width: 200,
                 child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (id.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Enter ID"),
@@ -99,8 +82,8 @@ class _loginState extends State<login> {
                         setState(() {
                           id.text;
                         });
-                        internet(context);
-                        if (c == true) {
+                        bool s = await internet(context);
+                        if (s == true) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -108,23 +91,31 @@ class _loginState extends State<login> {
                           setState(() {
                             id.text;
                           });
-                        }  if(c==false) {
-                          AlertDialog( title: const Text('AlertDialog Title'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: const <Widget>[
-              Text('This is a demo alert dialog.'),
-              Text('Would you like to approve of this message?'),
-            ],
-          ),
-        ), actions: <Widget>[
-          TextButton(
-            child: const Text('Approve'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],);
+                        }
+                        if (s == false) {
+                          print('show dig');
+                          return showDialog<void>(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Network Error'),
+                                content: SingleChildScrollView(
+                                  child:
+                                      Text('cheak your Enternet connecation'),
+                                  //   Text('Would you like to approve of this message?'),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Approve'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                         //  id.clear();
                       }
