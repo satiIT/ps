@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ps/screen/viewprofile.dart';
 import '/screen/newre.dart';
@@ -36,6 +37,45 @@ class _loginState extends State<login> {
       content: Text("Enter ID"),
       duration: Duration(milliseconds: 500),
     ));
+  }
+
+  void c() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('idNumber', isEqualTo: id)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        // return true;
+        //  addUser();
+
+        print('Id Not found');
+        return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Data Error'),
+              content: SingleChildScrollView(
+                child: Text(' ID Not found !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (value.docs.isNotEmpty) {
+        // return false;
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => viewprofile(id.text)));
+      }
+    });
   }
 
   @override
@@ -84,10 +124,7 @@ class _loginState extends State<login> {
                         });
                         bool s = await internet(context);
                         if (s == true) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => viewprofile(id.text)));
+                          c();
                           setState(() {
                             id.text;
                           });
