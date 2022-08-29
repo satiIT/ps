@@ -57,7 +57,7 @@ class _newreState extends State<newre> {
   void c() async {
     await FirebaseFirestore.instance
         .collection('users')
-        .where('idNumber', isEqualTo: id.text)
+        .where('idNumber', isEqualTo:int.parse(id.text))
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {

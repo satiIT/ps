@@ -85,6 +85,57 @@ class _uploadRecordState extends State<uploadRecord> {
       duration: Duration(milliseconds: 500),
     ));
   }
+   Future<bool> internet(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        v = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      v = false;
+    }
+    return v;
+  }
+
+  void c() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('idNumber', isEqualTo: id)
+        .get()
+        .then((value) {
+      if (value.docs.isEmpty) {
+        // return true;
+        //  addUser();
+
+        print('Id Not found');
+        return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Data Error'),
+              content: SingleChildScrollView(
+                child: Text(' ID Not found !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (value.docs.isNotEmpty) {
+        // return false;
+        addUser();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -298,15 +349,47 @@ class _uploadRecordState extends State<uploadRecord> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             if (illness.text.isEmpty) {
               showsnakbar('illness Name is empty');
             } else if (hospital.text.isEmpty) {
               showsnakbar('hosptial Name is empty');
             } else {
-              addUser();
+              
+              bool s = await internet(context);
+              if (s == true) {
+                c();
+                setState(() {
+                  id.text;
+                });
+              }
+              if (s == false) {
+                print('show dig');
+                return showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Network Error'),
+                      content: SingleChildScrollView(
+                        child: Text('cheak your Enternet connecation'),
+                        //   Text('Would you like to approve of this message?'),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Approve'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             }
-          },
+          }
+          ,
           tooltip: 'add record',
           child: const Icon(Icons.add),
         ));
