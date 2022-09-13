@@ -40,6 +40,8 @@ class _loginState extends State<login> {
   }
 
   void c() async {
+    int i = 0;
+
     await FirebaseFirestore.instance
         .collection('users')
         .where('idNumber', isEqualTo: int.parse(id.text))
@@ -61,7 +63,7 @@ class _loginState extends State<login> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Approve'),
+                  child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -72,7 +74,7 @@ class _loginState extends State<login> {
         );
       } else if (value.docs.isNotEmpty) {
         // return false;
-        Navigator.push(context,
+        return Navigator.push(context,
             MaterialPageRoute(builder: (context) => viewprofile(id.text)));
       }
     });
@@ -125,9 +127,6 @@ class _loginState extends State<login> {
                         bool s = await internet(context);
                         if (s == true) {
                           c();
-                          setState(() {
-                            id.text;
-                          });
                         }
                         if (s == false) {
                           print('show dig');
@@ -144,7 +143,7 @@ class _loginState extends State<login> {
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('Approve'),
+                                    child: const Text('OK'),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },

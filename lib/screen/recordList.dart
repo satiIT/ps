@@ -40,7 +40,15 @@ class _recordListState extends State<recordList> {
                     return Container(
                       margin: EdgeInsets.all(8),
                       child: InkWell(
-                          child: Text(data['illnessName']),
+                          child: Container(
+                              height: 45,
+                              width: 500,
+                              //color: Colors.amber,
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 147, 95, 237),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Text(data['illnessName'])),
                           onTap: () {
                             Navigator.push(
                                 context,

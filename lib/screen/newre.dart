@@ -57,7 +57,7 @@ class _newreState extends State<newre> {
   void c() async {
     await FirebaseFirestore.instance
         .collection('users')
-        .where('idNumber', isEqualTo:int.parse(id.text))
+        .where('idNumber', isEqualTo: int.parse(id.text))
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
@@ -66,29 +66,26 @@ class _newreState extends State<newre> {
 
         print('we have same id');
         return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Data Error'),
-        content: SingleChildScrollView(
-          child:
-              Text('Same ID was found !'),
-            
-          
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Approve'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-      } else if(value.docs.isEmpty) {
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Data Error'),
+              content: SingleChildScrollView(
+                child: Text('Same ID was found !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Approve'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (value.docs.isEmpty) {
         // return false;
         addUser();
       }
@@ -112,31 +109,26 @@ class _newreState extends State<newre> {
       //   'dffgfg':false
     }).then((value) {
       print("User Added");
-        return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Scusesfull opration'),
-        content: SingleChildScrollView(
-          child:
-              Text('User Added scusesfully !'),
-            
-          
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('ok'),
-            onPressed: () {
-               Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>  const login()));
-            },
-          ),
-        ],
-      );
-    });
+      return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Scusesfull opration'),
+              content: SingleChildScrollView(
+                child: Text('User Added scusesfully !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('ok'),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const login()));
+                  },
+                ),
+              ],
+            );
+          });
     }).catchError((error) => print("Failed to add user: $error"));
   }
 
@@ -213,8 +205,10 @@ class _newreState extends State<newre> {
             Container(
               width: 250,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('${date!.year}/${date!.month}/${date!.day}'),
+                  Text('${date!.year}/${date!.month}/${date!.day}' + '   '),
+                  SizedBox(height: 10),
                   RaisedButton(
                     color: Colors.amber,
                     onPressed: () async {
@@ -254,7 +248,7 @@ class _newreState extends State<newre> {
                 color: Color.fromRGBO(255, 254, 229, 1),
                 child: Row(
                   children: [
-                    Text("gender :"),
+                    Text("     gender :"),
                     DropdownButton<String>(
                       value: dropdownValue,
                       icon: const Icon(Icons.arrow_downward),
@@ -317,7 +311,7 @@ class _newreState extends State<newre> {
                 width: 300,
                 child: Row(
                   children: [
-                    Text('Bolad Type : '),
+                    Text('      Bolad Type : '),
                     DropdownButton<String>(
                       value: dropdownValueb,
                       icon: const Icon(Icons.arrow_downward),
