@@ -3,10 +3,16 @@ import 'package:ps/screen/ptabs.dart';
 import 'package:ps/screen/recordList.dart';
 import 'package:ps/screen/updaterecord.dart';
 import 'package:ps/screen/uploadrecord.dart';
+import 'package:ps/screen/viewbooking.dart';
 import 'package:ps/screen/viewprofile.dart';
 
+late String email;
+
 class dMain extends StatefulWidget {
-  const dMain({Key? key}) : super(key: key);
+  //const dMain({Key? key}) : super(key: key);
+  dMain(String e) {
+    email = e;
+  }
 
   @override
   State<dMain> createState() => _dMainState();
@@ -55,9 +61,11 @@ class _dMainState extends State<dMain> {
                   if (id.text.isEmpty) {
                     showsnakbar();
                   } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>  viewprofile(id.text)));
-                  //  id.clear();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => viewprofile(id.text)));
+                    //  id.clear();
                   }
                 },
                 child: Text("view record")),
@@ -72,8 +80,9 @@ class _dMainState extends State<dMain> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  uploadRecord(int.parse(id.text))));
-               //     id.clear();
+                            builder: (context) =>
+                                uploadRecord(int.parse(id.text))));
+                    //     id.clear();
                   }
                 },
                 child: Text("upload record")),
@@ -82,17 +91,13 @@ class _dMainState extends State<dMain> {
             width: 200,
             child: ElevatedButton(
                 onPressed: () {
-                  if (id.text.isEmpty) {
-                    showsnakbar();
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const recordList()));
-                    id.clear();
-                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => viewbooking(email)));
+                  id.clear();
                 },
-                child: Text("update record")),
+                child: Text("view bookings")),
           ),
         ],
       )),

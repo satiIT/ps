@@ -20,6 +20,8 @@ TextEditingController comment = TextEditingController();
 late List<String> diagnosesList = ['a'];
 late List<String> medicineList = ['b'];
 var id;
+bool? chr = false;
+bool? sur = false;
 
 //late List<String> newtu;
 
@@ -45,7 +47,7 @@ void initState() {
 //CollectionReference users =  FirebaseFirestore.instance.collection('users/dnKK4bdwLbMlkJLZ6s75/record');
 int ddd = 2;
 
-Future<void> addUser() async {
+Future<void> addUser(BuildContext context) async {
   diagnosesList.remove(diagnosesList[0]);
   medicineList.remove(medicineList[0]);
 
@@ -63,6 +65,9 @@ Future<void> addUser() async {
 
     // Call the user's CollectionReference to add a new user record
     return u.add({
+      'chronic':chr,
+      'surgery':sur,
+      'date': DateTime.now(),
       'illnessName': illness.text,
       'diagnoses': diagnosesList,
       'digimg': dignosesClass.pic,
@@ -72,6 +77,27 @@ Future<void> addUser() async {
     }).then((value) {
       print("User Added");
       print('the class list is : ' + dignosesClass.pic[0]);
+       showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('secusesfull'),
+                      content: SingleChildScrollView(
+                        child: Text('add photo secusesful'),
+                        //   Text('Would you like to approve of this message?'),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
     }).catchError((error) {
       print("Failed to add user: $error");
     });
@@ -85,7 +111,8 @@ class _uploadRecordState extends State<uploadRecord> {
       duration: Duration(milliseconds: 500),
     ));
   }
-   Future<bool> internet(BuildContext context) async {
+
+  Future<bool> internet(BuildContext context) async {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -121,7 +148,7 @@ class _uploadRecordState extends State<uploadRecord> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Approve'),
+                  child: const Text('ok'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -132,7 +159,7 @@ class _uploadRecordState extends State<uploadRecord> {
         );
       } else if (value.docs.isNotEmpty) {
         // return false;
-        addUser();
+        addUser(context);
       }
     });
   }
@@ -319,7 +346,15 @@ class _uploadRecordState extends State<uploadRecord> {
                 child: Row(
                   children: [
                     Text("Chronic :"),
-                    Checkbox(value: false, onChanged: null),
+                    Checkbox(
+                        value: sur,
+                        onChanged: ((value) {
+                          //  if(value==true)
+                          setState(() {
+                            //       checkedValue =value;
+                            sur = value;
+                          });
+                        })),
                   ],
                 )),
             Card(
@@ -327,7 +362,14 @@ class _uploadRecordState extends State<uploadRecord> {
                 child: Row(
                   children: [
                     Text("Surgery :"),
-                    Checkbox(value: false, onChanged: null),
+                    Checkbox(
+                        value: chr,
+                        onChanged: ((value) {
+                         setState(() {
+                          chr = value;
+                           
+                         });
+                        })),
                   ],
                 )),
             Container(
@@ -355,7 +397,6 @@ class _uploadRecordState extends State<uploadRecord> {
             } else if (hospital.text.isEmpty) {
               showsnakbar('hosptial Name is empty');
             } else {
-              
               bool s = await internet(context);
               if (s == true) {
                 c();
@@ -377,7 +418,7 @@ class _uploadRecordState extends State<uploadRecord> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          child: const Text('Approve'),
+                          child: const Text('ok'),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -388,8 +429,7 @@ class _uploadRecordState extends State<uploadRecord> {
                 );
               }
             }
-          }
-          ,
+          },
           tooltip: 'add record',
           child: const Icon(Icons.add),
         ));

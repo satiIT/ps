@@ -384,7 +384,7 @@ class _newreState extends State<newre> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          child: const Text('Approve'),
+                          child: const Text('ok'),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },

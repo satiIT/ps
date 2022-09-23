@@ -52,7 +52,7 @@ class _viewprofileState extends State<viewprofile> {
               if (snapshot.data == null) {
                 return Text("No Data");
               }
-              return Center(
+              return Container(
                 child: Center(
                   child: ListView(
                     children:
@@ -67,6 +67,8 @@ class _viewprofileState extends State<viewprofile> {
                           //       height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
+                          //  color: Colors.blue,
+
                             // color: Color.fromARGB(255, 169, 170, 171)
                           ),
                           child: Padding(
@@ -174,13 +176,13 @@ class _viewprofileState extends State<viewprofile> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 40),
+                                SizedBox(height: 200),
                                 Container(
                                   height: 45,
                                   width: 300,
                                   //color: Colors.amber,
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 147, 95, 237),
+                                      color: Colors.green,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   child: TextButton(
@@ -201,15 +203,19 @@ class _viewprofileState extends State<viewprofile> {
                                   width: 300,
                                   //color: Colors.amber,
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 147, 95, 237),
+                                      color: Colors.green,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   child: TextButton(
                                     onPressed: () {
                                       Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                              builder: (context) => booking()));
+                                          MaterialPageRoute<String>(
+                                              builder: (context) => booking(data['idNumber'].toString(), data['firstName'] +
+                                          ' ' +
+                                          data['secondName'] +
+                                          ' ' +
+                                          data['thirdName'])));
                                     },
                                     child: Text("booking",
                                         style: TextStyle(color: Colors.white)),

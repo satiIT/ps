@@ -23,33 +23,33 @@ class _ImageUploadsState extends State<ImageUploads> {
   File? _photo;
   final ImagePicker _picker = ImagePicker();
 
-  Future imgFromGallery() async {
+  Future imgFromGallery(BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
-        uploadFile();
+        uploadFile(context);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  Future imgFromCamera() async {
+  Future imgFromCamera(BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
-        uploadFile();
+        uploadFile(context);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  Future uploadFile() async {
+  Future uploadFile(BuildContext context) async {
     if (_photo == null) return;
     final fileName = basename(_photo!.path);
     final destination = 'files/$fileName';
@@ -63,8 +63,30 @@ class _ImageUploadsState extends State<ImageUploads> {
       dignosesClass(url: await ref.getDownloadURL());
       setState(() {
         dignosesClass.pic.add(_url!);
+       
       });
       print(_url);
+       showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('secusesfull'),
+                      content: SingleChildScrollView(
+                        child: Text('add photo secusesful'),
+                        //   Text('Would you like to approve of this message?'),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
       //   pictureList!.add(_url!);
       // dignosesClass(url: _url);
     //  dignosesClass.pic!.add(_url!);
@@ -135,14 +157,14 @@ class _ImageUploadsState extends State<ImageUploads> {
                       leading: new Icon(Icons.photo_library),
                       title: new Text('Gallery'),
                       onTap: () {
-                        imgFromGallery();
+                        imgFromGallery(context);
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () {
-                      imgFromCamera();
+                      imgFromCamera(context);
                       Navigator.of(context).pop();
                     },
                   ),

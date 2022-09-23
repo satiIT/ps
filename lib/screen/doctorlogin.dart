@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '/screen/dmain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +12,7 @@ class doctorLogin extends StatefulWidget {
 }
 
 class _doctorLoginState extends State<doctorLogin> {
+  late bool c;
   TextEditingController dID = TextEditingController();
   TextEditingController password = TextEditingController();
   void showsnakbar(String a) {
@@ -17,6 +20,21 @@ class _doctorLoginState extends State<doctorLogin> {
       content: Text(a),
       duration: Duration(milliseconds: 500),
     ));
+  }
+
+  Future<bool> internet(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        c = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      c = false;
+    }
+    print(c);
+    return c;
   }
 
   @override
@@ -68,23 +86,71 @@ class _doctorLoginState extends State<doctorLogin> {
                   } else if (password.text.isEmpty) {
                     showsnakbar("Enter password");
                   } else {
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                              email: dID.text, password: password.text);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const dMain()));
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
+                    bool s = await internet(context);
+                    print(s);
+                    if (s == true) {
+                      print('dataaaaa');
+                      try {
+                        CircularProgressIndicator();
+                        final credential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: dID.text, password: password.text);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  dMain(dID.text)));
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'wrong-password' ||
+                            e.code == 'user-not-found') {
+                          // print('Wrong password provided for that user.');
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('varification Error'),
+                                content: SingleChildScrollView(
+                                  child: Text('wrong username or password'),
+                                  //   Text('Would you like to approve of this message?'),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('ok'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }
+                      //       dID.clear();
+                      password.clear();
+                    } else if (s == false) {
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: false, // user must tap button!
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Network Error'),
+                            content: SingleChildScrollView(
+                              child: Text('cheak your Enternet connecation'),
+                              //   Text('Would you like to approve of this message?'),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('ok'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
-                    //       dID.clear();
-                    password.clear();
                   }
                 },
                 child: Text("login")),
