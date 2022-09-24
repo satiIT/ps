@@ -5,7 +5,7 @@ late String doctorEmail, hospitalID;
 late Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
     .collection('booking')
     .where('doctorEmail', isEqualTo: doctorEmail)
-    .where('hospitalID',isEqualTo: hospitalID)
+    .where('hospitalID', isEqualTo: int.parse(hospitalID))
     .snapshots();
 
 class viewBookingRes extends StatefulWidget {
@@ -21,8 +21,19 @@ class viewBookingRes extends StatefulWidget {
 }
 
 class _viewBookingResState extends State<viewBookingRes> {
+  se() {
+    setState(() {
+      _usersStream = FirebaseFirestore.instance
+          .collection('booking')
+          .where('doctorEmail', isEqualTo: doctorEmail)
+          .where('hospitalID', isEqualTo: int.parse(hospitalID))
+          .snapshots();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    se();
     return Scaffold(
       appBar: AppBar(title: Text('booking view')),
       body: Center(
@@ -37,7 +48,9 @@ class _viewBookingResState extends State<viewBookingRes> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading");
             }
-
+            if (snapshot.hasData == null) {
+              return Text("NO Booking");
+            }
             return Center(
               child: ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {

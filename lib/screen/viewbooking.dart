@@ -18,8 +18,18 @@ class viewbooking extends StatefulWidget {
 }
 
 class _viewbookingState extends State<viewbooking> {
+  se() {
+    setState(() {
+      _usersStream = FirebaseFirestore.instance
+          .collection('booking')
+          .where('doctorEmail', isEqualTo: email)
+          .snapshots();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    se();
     return Scaffold(
       appBar: AppBar(title: Text('booking view')),
       body: Center(
@@ -45,27 +55,26 @@ class _viewbookingState extends State<viewbooking> {
 
                       //   SizedBox(height: 15,),
                       Column(
-                        children: [
-                          SizedBox(
-                            height: 30,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        height: 45,
+                        width: 350,
+                        //color: Colors.amber,
+                        decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        child: Center(
+                          child: Text(
+                            data['doctorName'],
+                            style: TextStyle(color: Colors.black),
                           ),
-                          Container(
-                            height: 45,
-                            width: 350,
-                            //color: Colors.amber,
-                            decoration: BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            child: Center(
-                              child: Text(
-                                data['doctorName'],
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
+                        ),
+                      ),
+                    ],
+                  );
                 }).toList(),
               ),
             );

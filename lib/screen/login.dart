@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ps/screen/respationlogin.dart';
 import 'package:ps/screen/viewprofile.dart';
 import '/screen/newre.dart';
-import '/screen/ptabs.dart';
+//import '/screen/ptabs.dart';
 import 'doctorlogin.dart';
 
 late bool c;
@@ -41,6 +41,7 @@ class _loginState extends State<login> {
   }
 
   void c() async {
+    
     int i = 0;
 
     await FirebaseFirestore.instance
@@ -97,7 +98,7 @@ class _loginState extends State<login> {
                 //    padding: EdgeInsets.all(8),
                 margin: EdgeInsets.all(8),
                 width: 300,
-
+                    
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),

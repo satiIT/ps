@@ -12,6 +12,7 @@ class dMain extends StatefulWidget {
   //const dMain({Key? key}) : super(key: key);
   dMain(String e) {
     email = e;
+    print(email);
   }
 
   @override
@@ -91,10 +92,11 @@ class _dMainState extends State<dMain> {
             width: 200,
             child: ElevatedButton(
                 onPressed: () {
+                  
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => viewbooking(email)));
+                          builder: (context) => viewbooking(email))).then((value) =>setState(() => {}));
                   id.clear();
                 },
                 child: Text("view bookings")),
