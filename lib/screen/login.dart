@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ps/screen/respationlogin.dart';
 import 'package:ps/screen/viewprofile.dart';
 import '/screen/newre.dart';
 import '/screen/ptabs.dart';
@@ -179,7 +180,15 @@ class _loginState extends State<login> {
                     },
                     child: Text("Doctor")),
               ],
-            )
+            ),
+             TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const respationlogin()));
+                    },
+                    child: Text("respastion")),
           ],
         ),
       ),
