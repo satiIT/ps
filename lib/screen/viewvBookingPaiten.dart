@@ -1,28 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
-late String email;
+late int ide;
 late Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
     .collection('booking')
-    .where('doctorEmail', isEqualTo: email)
+    .where('patienID', isEqualTo: ide)
     .snapshots();
 
-class viewbooking extends StatefulWidget {
-  // const viewbooking({Key? key}) : super(key: key);
-  viewbooking(String e) {
-    email = e;
+class viewBookingForPatien extends StatefulWidget {
+  //const viewBookingForPatien({Key? key}) : super(key: key);
+  viewBookingForPatien(int i) {
+    ide = i;
   }
-
   @override
-  State<viewbooking> createState() => _viewbookingState();
+  State<viewBookingForPatien> createState() => _viewBookingForPatienState();
 }
 
-class _viewbookingState extends State<viewbooking> {
+class _viewBookingForPatienState extends State<viewBookingForPatien> {
   se() {
     setState(() {
       _usersStream = FirebaseFirestore.instance
           .collection('booking')
-          .where('doctorEmail', isEqualTo: email)
+          .where('patienID', isEqualTo: ide)
           .snapshots();
     });
   }

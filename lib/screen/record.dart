@@ -1,5 +1,8 @@
+import 'dart:core';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ps/screen/addNewDig.dart';
 import 'package:ps/screen/imgv.dart';
 import 'package:ps/screen/updaterecord.dart';
 
@@ -79,11 +82,15 @@ class _recordState extends State<record> {
                           height: 20,
                           child: Card(
                             //     color: Color.fromRGBO(255, 254, 229, 1),
-                            child: Center(
-                                child: data['date'] == null
-                                    ? Text('no Data')
-                                    : Text('Date  : ' +
-                                        data['date'].toDate().toString())),
+
+                            child: Container(
+                              height: 40,
+                              child: Center(
+                                  child: data['date'] == null
+                                      ? Text('no Data')
+                                      : Text('Date  : ' +
+                                          data['date'].toDate().toString())),
+                            ),
                           ),
                         ),
                         data['digimg'] == null
@@ -92,7 +99,7 @@ class _recordState extends State<record> {
                                 height: 300,
                                 width: 200,
                                 child: ListView.builder(
-                                  itemCount: data['digimg'].length,
+                                  itemCount: data['diagnoses'].length,
                                   itemBuilder: (context, index) {
                                     List s = data['digimg'];
                                     List n = data['diagnoses'];
@@ -100,15 +107,23 @@ class _recordState extends State<record> {
                                     //  print(s[0]);
                                     return Column(
                                       children: [
-                                        Container(height:40 ,
-                                          child: Card(child: Center(child: Text('Name Of Diagnoses : ' + n[index])))),
-                                        InkWell(child: Image.network(s[index]),
-                                        onTap: (){
-                                             Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>  imgv(s[index])));
-                                        },),
+                                        Container(
+                                            height: 40,
+                                            child: Card(
+                                                child: Center(
+                                                    child: Text(
+                                                        'Name Of Diagnoses : ' +
+                                                            n[index])))),
+                                        InkWell(
+                                          child: Image.network(s[index]),
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        imgv(s[index])));
+                                          },
+                                        ),
                                         SizedBox(
                                           height: 20,
                                         ),
@@ -161,6 +176,19 @@ class _recordState extends State<record> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 60,
+                        ),
+                        Container(
+                          child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => addNewdiag('users/$oid/record',document.id,data['diagnoses'],data['digimg'])));
+                              },
+                              child: Text("add diagnoses")),
+                        )
                         /*  ListView.builder(
                             itemCount: data['medicine'].length,
                             itemBuilder: (context, index) {

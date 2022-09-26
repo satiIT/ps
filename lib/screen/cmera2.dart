@@ -1,21 +1,22 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:ps/classes/diganosesClass.dart';
-//import 'package:ps/classes/picList.dart';
+import 'package:ps/screen/addNewDig.dart';
 
-class ImageUploads extends StatefulWidget {
-  ImageUploads({Key? key}) : super(key: key);
+class camtwo extends StatefulWidget {
+  const camtwo({Key? key}) : super(key: key);
 
   @override
-  _ImageUploadsState createState() => _ImageUploadsState();
+  State<camtwo> createState() => _camtwoState();
 }
 
-class _ImageUploadsState extends State<ImageUploads> {
+class _camtwoState extends State<camtwo> {
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   String? _url;
@@ -60,21 +61,20 @@ class _ImageUploadsState extends State<ImageUploads> {
           .child('file/');
       await ref.putFile(_photo!);
 
-      dignosesClass(url: await ref.getDownloadURL());
+      //    dignosesClass(url: await ref.getDownloadURL());
       setState(() {
-        dignosesClass.pic.add(_url!);
-      print(dignosesClass.pic);
-       
-       
+        //  dignosesClass.pic.add(_url!);
+        //print(dignosesClass.pic);
+        digimg.add(_url);
       });
-   //   print(_url);
-      
+      //   print(_url);
+
       //   pictureList!.add(_url!);
       // dignosesClass(url: _url);
-    //  dignosesClass.pic!.add(_url!);
+      //  dignosesClass.pic!.add(_url!);
 
       // Text('_u');
-  //    print('pictureList![0]');
+      //    print('pictureList![0]');
     } catch (e) {
       //print('error occured');
     }
@@ -95,7 +95,7 @@ class _ImageUploadsState extends State<ImageUploads> {
                 _showPicker(context);
               },
               child: CircleAvatar(
-            //    height:,
+                //    height:,
                 radius: 55,
                 backgroundColor: Color(0xffFDCF09),
                 child: _photo != null

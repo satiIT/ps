@@ -23,11 +23,19 @@ class viewBookingRes extends StatefulWidget {
 class _viewBookingResState extends State<viewBookingRes> {
   se() {
     setState(() {
-      _usersStream = FirebaseFirestore.instance
-          .collection('booking')
-          .where('doctorEmail', isEqualTo: doctorEmail)
-          .where('hospitalID', isEqualTo: int.parse(hospitalID))
-          .snapshots();
+      if (doctorEmail.isEmpty) {
+        _usersStream = FirebaseFirestore.instance
+            .collection('booking')
+            //   .where('doctorEmail', isEqualTo: doctorEmail)
+            .where('hospitalID', isEqualTo: int.parse(hospitalID))
+            .snapshots();
+      } else {
+        _usersStream = FirebaseFirestore.instance
+            .collection('booking')
+            .where('doctorEmail', isEqualTo: doctorEmail)
+            .where('hospitalID', isEqualTo: int.parse(hospitalID))
+            .snapshots();
+      }
     });
   }
 
@@ -74,7 +82,7 @@ class _viewBookingResState extends State<viewBookingRes> {
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: Center(
                           child: Text(
-                            data['doctorName'],
+                            data['patientName'],
                             style: TextStyle(color: Colors.black),
                           ),
                         ),

@@ -55,6 +55,7 @@ class _newreState extends State<newre> {
   }
 
   void c() async {
+    
     await FirebaseFirestore.instance
         .collection('users')
         .where('idNumber', isEqualTo: int.parse(id.text))
@@ -348,6 +349,7 @@ class _newreState extends State<newre> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
+            
             if (fName.text.isEmpty) {
               showsnakbar("Enter FirstName");
             } else if (sName.text.isEmpty) {

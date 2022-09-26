@@ -65,8 +65,8 @@ Future<void> addUser(BuildContext context) async {
 
     // Call the user's CollectionReference to add a new user record
     return u.add({
-      'chronic':chr,
-      'surgery':sur,
+      'chronic': chr,
+      'surgery': sur,
       'date': DateTime.now(),
       'illnessName': illness.text,
       'diagnoses': diagnosesList,
@@ -77,27 +77,30 @@ Future<void> addUser(BuildContext context) async {
     }).then((value) {
       print("User Added");
       print('the class list is : ' + dignosesClass.pic[0]);
-       showDialog<void>(
-                  context: context,
-                  barrierDismissible: false, // user must tap button!
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('secusesfull'),
-                      content: SingleChildScrollView(
-                        child: Text('add photo secusesful'),
-                        //   Text('Would you like to approve of this message?'),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('ok'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('secusesfull'),
+            content: SingleChildScrollView(
+              child: Text('add photo secusesful'),
+              //   Text('Would you like to approve of this message?'),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+     
+      
+      // dignosesClass.pic.clear();
     }).catchError((error) {
       print("Failed to add user: $error");
     });
@@ -365,10 +368,9 @@ class _uploadRecordState extends State<uploadRecord> {
                     Checkbox(
                         value: chr,
                         onChanged: ((value) {
-                         setState(() {
-                          chr = value;
-                           
-                         });
+                          setState(() {
+                            chr = value;
+                          });
                         })),
                   ],
                 )),

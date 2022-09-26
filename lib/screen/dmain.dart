@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ps/screen/booking.dart';
 import 'package:ps/screen/ptabs.dart';
 import 'package:ps/screen/recordList.dart';
 import 'package:ps/screen/updaterecord.dart';
@@ -7,6 +9,7 @@ import 'package:ps/screen/viewbooking.dart';
 import 'package:ps/screen/viewprofile.dart';
 
 late String email;
+
 
 class dMain extends StatefulWidget {
   //const dMain({Key? key}) : super(key: key);
@@ -27,6 +30,50 @@ class _dMainState extends State<dMain> {
       content: Text("Enter ID"),
       duration: Duration(milliseconds: 500),
     ));
+  }
+  booking() async {
+  await FirebaseFirestore.instance
+      .collection('booking')
+      .where('doctorEmail', isEqualTo: email)
+      .get()
+      .then((value) {
+    if (value.docs.isEmpty) {
+      // return true;
+      //  addUser();
+
+      print('we have same id');
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Data Error'),
+            content: SingleChildScrollView(
+              child: Text('Data not found !'),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (value.docs.isNotEmpty) {
+      // return false;
+      return navi();
+    }
+  });
+}
+
+
+  navi() {
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => viewbooking(email)))
+        .then((value) => setState(() => {}));
   }
 
   @override
@@ -92,12 +139,8 @@ class _dMainState extends State<dMain> {
             width: 200,
             child: ElevatedButton(
                 onPressed: () {
-                  
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => viewbooking(email))).then((value) =>setState(() => {}));
-                  id.clear();
+                  booking();
+                  //  id.clear();
                 },
                 child: Text("view bookings")),
           ),

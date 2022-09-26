@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ps/screen/booking.dart';
 import 'package:ps/screen/recordList.dart';
 import 'package:ps/screen/viewrecord.dart';
+import 'package:ps/screen/viewvBookingPaiten.dart';
 
 var id;
 
@@ -221,6 +222,26 @@ class _viewprofileState extends State<viewprofile> {
                                         style: TextStyle(color: Colors.white)),
                                   ),
                                 ),
+                                  SizedBox(height: 10),
+                                Container(
+                                  height: 45,
+                                  width: 300,
+                                  //color: Colors.amber,
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute<String>(
+                                              builder: (context) =>viewBookingForPatien(data['idNumber']) ));},
+                                    
+                                    child: Text("View Booking",
+                                        style: TextStyle(color: Colors.white)),
+                                  ),
+                                )
                               ],
                             ),
                           ));
