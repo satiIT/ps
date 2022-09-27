@@ -98,8 +98,7 @@ Future<void> addUser(BuildContext context) async {
           );
         },
       );
-     
-      
+
       // dignosesClass.pic.clear();
     }).catchError((error) {
       print("Failed to add user: $error");
@@ -227,13 +226,21 @@ class _uploadRecordState extends State<uploadRecord> {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (diagnoses.text.isEmpty) {
                         showsnakbar('write diagnoses');
                       } else {
                         setState(() {
                           diagnosesList.add(diagnoses.text);
                         });
+                        await availableCameras().then(
+                          (value) => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImageUploads(),
+                            ),
+                          ),
+                        );
                       }
                     },
                     icon: Icon(Icons.add)),
@@ -261,19 +268,7 @@ class _uploadRecordState extends State<uploadRecord> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(diagnosesList[index]),
-                                        IconButton(
-                                            onPressed: () async {
-                                              await availableCameras().then(
-                                                (value) => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ImageUploads(),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            icon: Icon(Icons.camera)),
+
                                         //      pictureList!.isEmpty?
                                         //    imgview(index)
 
@@ -401,6 +396,22 @@ class _uploadRecordState extends State<uploadRecord> {
             } else {
               bool s = await internet(context);
               if (s == true) {
+                showDialog<void>(
+                    context: context,
+                    barrierDismissible: false, // user must tap button!
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text(' '),
+                        content: SingleChildScrollView(
+                          child: CircularProgressIndicator(),
+                        ),
+                        actions: <Widget>[
+                          
+                            
+                          
+                        ],
+                      );
+                    });
                 c();
                 setState(() {
                   id.text;

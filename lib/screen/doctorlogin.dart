@@ -91,14 +91,28 @@ class _doctorLoginState extends State<doctorLogin> {
                     if (s == true) {
                       print('dataaaaa');
                       try {
-                        CircularProgressIndicator();
+                        //  CircularProgressIndicator();
+                        showDialog<void>(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(' '),
+                                content: SingleChildScrollView(
+                                  child: Center(child: CircularProgressIndicator.adaptive()) // Text('User Added scusesfully !'),
+                                ),
+                                actions: <Widget>[
+                                 
+                                ],
+                              );
+                            });
                         final credential = await FirebaseAuth.instance
                             .signInWithEmailAndPassword(
                                 email: dID.text, password: password.text);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>  dMain(dID.text)));
+                                builder: (context) => dMain(dID.text)));
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'wrong-password' ||
                             e.code == 'user-not-found') {

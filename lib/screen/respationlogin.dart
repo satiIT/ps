@@ -43,7 +43,7 @@ class _respationloginState extends State<respationlogin> {
       if (value.docs.isEmpty) {
         // return true;
         //  addUser();
-
+      
         print(' Not found');
         return showDialog<void>(
           context: context,
@@ -123,6 +123,21 @@ class _respationloginState extends State<respationlogin> {
                 onPressed: () async {
                   bool s = await internet(context);
                   if (s == true) {
+                      showDialog<void>(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(''),
+                                content: SingleChildScrollView(
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                  //   Text('Would you like to approve of this message?'),
+                                ),
+                                actions: <Widget>[],
+                              );
+                            },
+                          );
                     c();
                   }
                      if (s == false) {

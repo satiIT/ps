@@ -20,7 +20,7 @@ class addNewdiag extends StatefulWidget {
     docID = dID;
     digName = dn;
     digimg = s;
-    print(digimg[1]);
+    //  print(digimg[1]);
     print(docID);
     li = digName.length;
   }
@@ -110,13 +110,22 @@ class _addNewdiagState extends State<addNewdiag> {
               ),
             ),
             IconButton(
-                onPressed: () {
+                onPressed: () async {
                   if (diagnoses.text.isEmpty) {
                     showsnakbar('write diagnoses');
                   } else {
                     setState(() {
                       digName.add(diagnoses.text);
+                      li = digName.length;
                     });
+                    await availableCameras().then(
+                      (value) => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImageUploads(),
+                        ),
+                      ),
+                    );
                   }
                 },
                 icon: Icon(Icons.add)),
@@ -142,26 +151,14 @@ class _addNewdiagState extends State<addNewdiag> {
                               child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      height: 40,
-                                      child: Center(child: Text(digName[index]))),
-                                    index<=li-1?
-                                    Text(''):
-                                    IconButton(
-                                        onPressed: () async {
-                                          await availableCameras().then(
-                                            (value) => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ImageUploads(),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        icon: Icon(Icons.camera)),
+                                        height: 40,
+                                        child: Center(
+                                            child: Text(digName[index]))),
+                                    //  index<=li-1?
+
                                     //      pictureList!.isEmpty?
                                     //    imgview(index)
 
@@ -181,7 +178,21 @@ class _addNewdiagState extends State<addNewdiag> {
             } else {
               bool s = await internet(context);
               if (s == true) {
-                internet(context);
+                // internet(context);
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(''),
+                      content: SingleChildScrollView(
+                        child: Center(child: CircularProgressIndicator()),
+                        //   Text('Would you like to approve of this message?'),
+                      ),
+                      actions: <Widget>[],
+                    );
+                  },
+                );
                 addi();
               }
               if (s == false) {

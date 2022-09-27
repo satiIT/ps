@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ps/screen/booking.dart';
-import 'package:ps/screen/ptabs.dart';
+//import 'package:ps/screen/ptabs.dart';
 import 'package:ps/screen/recordList.dart';
 import 'package:ps/screen/updaterecord.dart';
 import 'package:ps/screen/uploadrecord.dart';
 import 'package:ps/screen/viewbooking.dart';
 import 'package:ps/screen/viewprofile.dart';
+import 'package:ps/screen/viewprofilefordoctor.dart';
 
 late String email;
 
@@ -112,7 +113,7 @@ class _dMainState extends State<dMain> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => viewprofile(id.text)));
+                            builder: (context) => viewProfileForDoctor(id.text)));
                     //  id.clear();
                   }
                 },

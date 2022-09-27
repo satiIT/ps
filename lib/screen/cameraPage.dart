@@ -16,6 +16,21 @@ class ImageUploads extends StatefulWidget {
 }
 
 class _ImageUploadsState extends State<ImageUploads> {
+  Future<bool> internet(BuildContext context) async {
+    late bool v;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        v = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      v = false;
+    }
+    return v;
+  }
+
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   String? _url;
@@ -25,11 +40,49 @@ class _ImageUploadsState extends State<ImageUploads> {
 
   Future imgFromGallery(BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
+    bool x = await internet(context);
     setState(() {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
-        uploadFile(context);
+        if (x == true) {
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text(''),
+                content:
+                    SingleChildScrollView(child: Center(child: CircularProgressIndicator())
+                        //   Text('Would you like to approve of this message?'),
+                        ),
+                actions: <Widget>[],
+              );
+            },
+          );
+          uploadFile(context);
+        } else if (x == false) {
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Network Error'),
+                content: SingleChildScrollView(
+                  child: Text('cheak your Enternet connecation'),
+                  //   Text('Would you like to approve of this message?'),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       } else {
         print('No image selected.');
       }
@@ -59,22 +112,38 @@ class _ImageUploadsState extends State<ImageUploads> {
           .ref(destination)
           .child('file/');
       await ref.putFile(_photo!);
-
+      showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Scusesfull opration'),
+              content: SingleChildScrollView(
+                child: Text('User Added scusesfully !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
       dignosesClass(url: await ref.getDownloadURL());
       setState(() {
         dignosesClass.pic.add(_url!);
-      print(dignosesClass.pic);
-       
-       
+        print(dignosesClass.pic);
       });
-   //   print(_url);
-      
+      //   print(_url);
+
       //   pictureList!.add(_url!);
       // dignosesClass(url: _url);
-    //  dignosesClass.pic!.add(_url!);
+      //  dignosesClass.pic!.add(_url!);
 
       // Text('_u');
-  //    print('pictureList![0]');
+      //    print('pictureList![0]');
     } catch (e) {
       //print('error occured');
     }
@@ -95,7 +164,7 @@ class _ImageUploadsState extends State<ImageUploads> {
                 _showPicker(context);
               },
               child: CircleAvatar(
-            //    height:,
+                //    height:,
                 radius: 55,
                 backgroundColor: Color(0xffFDCF09),
                 child: _photo != null

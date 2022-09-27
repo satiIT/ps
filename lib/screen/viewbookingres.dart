@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ps/screen/viewfullbook.dart';
 
 late String doctorEmail, hospitalID;
 late Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
@@ -34,6 +35,7 @@ class _viewBookingResState extends State<viewBookingRes> {
             .collection('booking')
             .where('doctorEmail', isEqualTo: doctorEmail)
             .where('hospitalID', isEqualTo: int.parse(hospitalID))
+       //     .where('date', isEqualTo: DateTime.now())
             .snapshots();
       }
     });
@@ -73,17 +75,26 @@ class _viewBookingResState extends State<viewBookingRes> {
                       SizedBox(
                         height: 30,
                       ),
-                      Container(
-                        height: 45,
-                        width: 350,
-                        //color: Colors.amber,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        child: Center(
-                          child: Text(
-                            data['patientName'],
-                            style: TextStyle(color: Colors.black),
+                      InkWell(
+                        onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        viewfullbook(document.id))))
+                            .then((value) => setState(() => {})),
+                        child: Container(
+                          height: 45,
+                          width: 350,
+                          //color: Colors.amber,
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Center(
+                            child: Text(
+                              data['patientName'],
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
                       ),

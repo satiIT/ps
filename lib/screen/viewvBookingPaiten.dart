@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:ps/screen/viewfullbook.dart';
+import 'package:ps/screen/viewfullbookpai.dart';
 
 late int ide;
 late Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
@@ -24,6 +26,7 @@ class _viewBookingForPatienState extends State<viewBookingForPatien> {
       _usersStream = FirebaseFirestore.instance
           .collection('booking')
           .where('patienID', isEqualTo: ide)
+        //  .where('date', isEqualTo: DateTime.now())
           .snapshots();
     });
   }
@@ -45,7 +48,9 @@ class _viewBookingForPatienState extends State<viewBookingForPatien> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading");
             }
-
+            if (snapshot.hasData == null) {
+              return Text('No Data');
+            }
             return Center(
               child: ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -60,17 +65,35 @@ class _viewBookingForPatienState extends State<viewBookingForPatien> {
                       SizedBox(
                         height: 30,
                       ),
-                      Container(
-                        height: 45,
-                        width: 350,
-                        //color: Colors.amber,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        child: Center(
-                          child: Text(
-                            data['patientName'],
-                            style: TextStyle(color: Colors.black),
+                      InkWell(
+                        onTap: (() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      viewFullBookpai(document.id, ide))));
+                        }),
+                        child: Container(
+                          height: 45,
+                          width: 350,
+                          //color: Colors.amber,
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  data['hospitalName'],
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                Text(
+                                  data['date'].toDate().toString(),
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

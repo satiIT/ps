@@ -9,6 +9,7 @@ import '/screen/newre.dart';
 import 'doctorlogin.dart';
 
 late bool c;
+bool x = false;
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -41,7 +42,6 @@ class _loginState extends State<login> {
   }
 
   void c() async {
-    
     int i = 0;
 
     await FirebaseFirestore.instance
@@ -98,7 +98,7 @@ class _loginState extends State<login> {
                 //    padding: EdgeInsets.all(8),
                 margin: EdgeInsets.all(8),
                 width: 300,
-                    
+
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -117,6 +117,8 @@ class _loginState extends State<login> {
                 width: 200,
                 child: ElevatedButton(
                     onPressed: () async {
+                      x = true;
+                      
                       if (id.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Enter ID"),
@@ -128,9 +130,25 @@ class _loginState extends State<login> {
                         });
                         bool s = await internet(context);
                         if (s == true) {
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(''),
+                                content: SingleChildScrollView(
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                  //   Text('Would you like to approve of this message?'),
+                                ),
+                                actions: <Widget>[],
+                              );
+                            },
+                          );
                           c();
                         }
                         if (s == false) {
+                          
                           print('show dig');
                           return showDialog<void>(
                             context: context,
@@ -182,14 +200,14 @@ class _loginState extends State<login> {
                     child: Text("Doctor")),
               ],
             ),
-             TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const respationlogin()));
-                    },
-                    child: Text("respastion")),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const respationlogin()));
+                },
+                child: Text("respastion")),
           ],
         ),
       ),

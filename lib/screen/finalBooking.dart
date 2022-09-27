@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ps/screen/booking.dart';
@@ -26,6 +28,63 @@ class finalBooking extends StatefulWidget {
 }
 
 class _finalBookingState extends State<finalBooking> {
+  Future<bool> internet(BuildContext context) async {
+    late bool v;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        v = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      v = false;
+    }
+    return v;
+  }
+
+  void c() async {
+    await FirebaseFirestore.instance
+        .collection('booking')
+        .where('patienID', isEqualTo: int.parse(pid))
+        .where('doctorName', isEqualTo: doctor)
+        .where('hospitalName', isEqualTo: hosptial)
+        .where('hospitalID', isEqualTo: hid)
+        // .where('date',isGreaterThanOrEqualTo: DateTime.now())
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        // return true;
+        //  addUser();
+
+        print('we have same id');
+        return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Data Error'),
+              content: SingleChildScrollView(
+                child: Text('Same booking was found !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (value.docs.isEmpty) {
+        // return false;
+        b(context);
+      }
+    });
+  }
+
   Future<void> b(BuildContext context) {
     // Call the user's CollectionReference to add a new user
 
@@ -33,7 +92,7 @@ class _finalBookingState extends State<finalBooking> {
       'hospitalID': hid,
       'hospitalName': hosptial,
       'doctorEmail': email,
-      'doctorName':doctor,
+      'doctorName': doctor,
       'patienID': int.parse(pid),
       'patientName': pname,
       'date': DateTime.now()
@@ -149,8 +208,49 @@ class _finalBookingState extends State<finalBooking> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            b(context);
+          onPressed: () async {
+            bool q = await internet(context);
+            if (q == true) {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false, // user must tap button!
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text(''),
+                    content: SingleChildScrollView(
+                      child: Center(child: CircularProgressIndicator()),
+                      //   Text('Would you like to approve of this message?'),
+                    ),
+                    actions: <Widget>[],
+                  );
+                },
+              );
+              c();
+            }
+            else{
+           return   showDialog<void>(
+                            context: context,
+                            barrierDismissible: false, // user must tap button!
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Network Error'),
+                                content: SingleChildScrollView(
+                                  child:
+                                      Text('cheak your Enternet connecation'),
+                                  //   Text('Would you like to approve of this message?'),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+            }
           },
           child: const Icon(Icons.add),
         ));

@@ -55,7 +55,6 @@ class _newreState extends State<newre> {
   }
 
   void c() async {
-    
     await FirebaseFirestore.instance
         .collection('users')
         .where('idNumber', isEqualTo: int.parse(id.text))
@@ -77,7 +76,7 @@ class _newreState extends State<newre> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Approve'),
+                  child: const Text('ok'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -114,6 +113,14 @@ class _newreState extends State<newre> {
           context: context,
           barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
+            fName.clear();
+            sName.clear();
+            tName.clear();
+            id.clear();
+            height.clear();
+            weight.clear();
+            phone.clear();
+
             return AlertDialog(
               title: const Text('Scusesfull opration'),
               content: SingleChildScrollView(
@@ -130,7 +137,36 @@ class _newreState extends State<newre> {
               ],
             );
           });
-    }).catchError((error) => print("Failed to add user: $error"));
+    }).catchError((error) {
+      return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            fName.clear();
+            sName.clear();
+            tName.clear();
+            id.clear();
+            height.clear();
+            weight.clear();
+            phone.clear();
+
+            return AlertDialog(
+              title: const Text('Erorr'),
+              content: SingleChildScrollView(
+                child: Text('internt Erorr !'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+            // print("Failed to add user: $error");
+          });
+    });
   }
 
   @override
@@ -349,7 +385,6 @@ class _newreState extends State<newre> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            
             if (fName.text.isEmpty) {
               showsnakbar("Enter FirstName");
             } else if (sName.text.isEmpty) {
@@ -358,15 +393,36 @@ class _newreState extends State<newre> {
               showsnakbar("Enter Tharid Name");
             } else if (id.text.isEmpty) {
               showsnakbar("Enter id");
+             
             } else if (phone.text.isEmpty) {
               showsnakbar("Enter phone Number ");
             } else if (height.text.isEmpty) {
               showsnakbar("Enter height");
             } else if (weight.text.isEmpty) {
               showsnakbar("Enter Weight");
-            } else {
+            }else if (id.text.length < 9) {
+                showsnakbar("Enter must be 9 ");
+              }
+             else if  (id.text.length > 10) {
+                showsnakbar("Enter must be 9 ");
+              }
+             else {
               bool s = await internet(context);
               if (s == true) {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false, // user must tap button!
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(''),
+                      content: SingleChildScrollView(
+                        child: Center(child: CircularProgressIndicator()),
+                        //   Text('Would you like to approve of this message?'),
+                      ),
+                      actions: <Widget>[],
+                    );
+                  },
+                );
                 c();
                 setState(() {
                   id.text;

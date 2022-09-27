@@ -114,6 +114,9 @@ class _recordState extends State<record> {
                                                     child: Text(
                                                         'Name Of Diagnoses : ' +
                                                             n[index])))),
+                                                         index >= s.length?
+                                                        
+                                                         Text('No Images'):
                                         InkWell(
                                           child: Image.network(s[index]),
                                           onTap: () {

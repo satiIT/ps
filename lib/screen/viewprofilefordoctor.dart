@@ -1,28 +1,21 @@
-//import 'dart:html';
-
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ps/screen/booking.dart';
-import 'package:ps/screen/recordList.dart';
 import 'package:ps/screen/viewrecord.dart';
-import 'package:ps/screen/viewvBookingPaiten.dart';
 
 var id;
 
-class viewprofile extends StatefulWidget {
-  //const viewprofile({Key? key}) : super(key: key);
-  viewprofile(t) {
-    id = t;
-    print(id);
+class viewProfileForDoctor extends StatefulWidget {
+  // const viewProfileForDoctor({Key? key}) : super(key: key);
+  viewProfileForDoctor(d) {
+    id = d;
   }
-
   @override
-  State<viewprofile> createState() => _viewprofileState();
+  State<viewProfileForDoctor> createState() => _viewProfileForDoctorState();
 }
 
-class _viewprofileState extends State<viewprofile> {
+class _viewProfileForDoctorState extends State<viewProfileForDoctor> {
   s() {
     setState(() {
       id;
@@ -65,12 +58,14 @@ class _viewprofileState extends State<viewprofile> {
                       String s = document.id;
                       // ignore: avoid_print
                       print(s);
-                      return Container(
+                      return
+                      
+                       Container(
                           width: 10,
                           //       height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                          //  color: Colors.blue,
+                            //  color: Colors.blue,
 
                             // color: Color.fromARGB(255, 169, 170, 171)
                           ),
@@ -200,50 +195,6 @@ class _viewprofileState extends State<viewprofile> {
                                         style: TextStyle(color: Colors.white)),
                                   ),
                                 ),
-                                SizedBox(height: 10),
-                                Container(
-                                  height: 45,
-                                  width: 300,
-                                  //color: Colors.amber,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute<String>(
-                                              builder: (context) => booking(data['idNumber'].toString(), data['firstName'] +
-                                          ' ' +
-                                          data['secondName'] +
-                                          ' ' +
-                                          data['thirdName'])));
-                                    },
-                                    child: Text("booking",
-                                        style: TextStyle(color: Colors.white)),
-                                  ),
-                                ),
-                                  SizedBox(height: 10),
-                                Container(
-                                  height: 45,
-                                  width: 300,
-                                  //color: Colors.amber,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute<String>(
-                                              builder: (context) =>viewBookingForPatien(data['idNumber']) ));},
-                                    
-                                    child: Text("View Booking",
-                                        style: TextStyle(color: Colors.white)),
-                                  ),
-                                )
                               ],
                             ),
                           ));

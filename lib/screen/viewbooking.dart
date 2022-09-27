@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ps/screen/viewfullbook.dart';
 
 late String email;
 late Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
@@ -23,6 +24,7 @@ class _viewbookingState extends State<viewbooking> {
       _usersStream = FirebaseFirestore.instance
           .collection('booking')
           .where('doctorEmail', isEqualTo: email)
+       //   .where('date', isEqualTo: DateTime.now())
           .snapshots();
     });
   }
@@ -44,6 +46,9 @@ class _viewbookingState extends State<viewbooking> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading");
             }
+            if (snapshot.hasData == null) {
+              return Text('No Data');
+            }
 
             return Center(
               child: ListView(
@@ -59,17 +64,35 @@ class _viewbookingState extends State<viewbooking> {
                       SizedBox(
                         height: 30,
                       ),
-                      Container(
-                        height: 45,
-                        width: 350,
-                        //color: Colors.amber,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        child: Center(
-                          child: Text(
-                            data['patientName'],
-                            style: TextStyle(color: Colors.black),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      viewfullbook(document.id)));
+                        },
+                        child: Container(
+                          //height: 45,
+                          width: 350,
+                          //color: Colors.amber,
+                          decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'pateint Name  :  ' + data['patientName'],
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                Text(
+                                  'hospital  :  ' + data['hospitalName'],
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

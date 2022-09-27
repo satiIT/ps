@@ -45,6 +45,9 @@ class _viewRecordState extends State<viewRecord> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Text("Loading");
               }
+               if (snapshot.hasData == null) {
+              return Text('No Data');
+            }
 
               return Center(
                 child: ListView(
