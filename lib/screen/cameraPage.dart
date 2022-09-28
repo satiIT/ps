@@ -51,10 +51,10 @@ class _ImageUploadsState extends State<ImageUploads> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text(''),
-                content:
-                    SingleChildScrollView(child: Center(child: CircularProgressIndicator())
-                        //   Text('Would you like to approve of this message?'),
-                        ),
+                content: SingleChildScrollView(
+                    child: Center(child: CircularProgressIndicator())
+                    //   Text('Would you like to approve of this message?'),
+                    ),
                 actions: <Widget>[],
               );
             },
@@ -91,13 +91,52 @@ class _ImageUploadsState extends State<ImageUploads> {
 
   Future imgFromCamera(BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
+    bool x = await internet(context);
     setState(() {
       if (pickedFile != null) {
         _photo = File(pickedFile.path);
         uploadFile(context);
-      } else {
-        print('No image selected.');
+        if (x == true) {
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text(''),
+                content: SingleChildScrollView(
+                    child: Center(child: CircularProgressIndicator())
+                    //   Text('Would you like to approve of this message?'),
+                    ),
+                actions: <Widget>[],
+              );
+            },
+          );
+          uploadFile(context);
+        } else if (x == false) {
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Network Error'),
+                content: SingleChildScrollView(
+                  child: Text('cheak your Enternet connecation'),
+                  //   Text('Would you like to approve of this message?'),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          print('No image selected.');
+        }
       }
     });
   }

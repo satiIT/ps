@@ -80,7 +80,7 @@ class _viewRecordState extends State<viewRecord> {
                             child: Center(
                               child: Text(
                                 data['illnessName'],
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black,fontSize: 20),
                               ),
                             ),
                           ),

@@ -106,9 +106,9 @@ class _doctorBookingState extends State<doctorBooking> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5))),
                             child: Center(
-                              child: Text(
+                              child: Text('DR : '+
                                 data['name'],
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black,fontSize: 20),
                               ),
                             ),
                           ),

@@ -126,7 +126,7 @@ class _viewFullBookpaiState extends State<viewFullBookpai> {
                         child: Center(
                           child: Text(
                             'hospital Name : ' + data['hospitalName'],
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
                       ),
@@ -143,7 +143,7 @@ class _viewFullBookpaiState extends State<viewFullBookpai> {
                         child: Center(
                           child: Text(
                             'Doctor Name  :  ' + data['doctorName'],
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
                       ),
@@ -160,7 +160,7 @@ class _viewFullBookpaiState extends State<viewFullBookpai> {
                         child: Center(
                           child: Text(
                             'patien Name  :  ' + data['patientName'],
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
                       ),
@@ -177,11 +177,13 @@ class _viewFullBookpaiState extends State<viewFullBookpai> {
                         child: Center(
                           child: Text(
                             'Date  :  ' + data['date'].toDate().toString(),
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
                       ),
-
+                      SizedBox(
+                        height: 40,
+                      ),
                       Container(
                           child: Center(
                         child: TextButton(
@@ -207,7 +209,6 @@ class _viewFullBookpaiState extends State<viewFullBookpai> {
                                           onPressed: () {
                                             c();
                                             Navigator.of(context).pop();
-
                                           },
                                         ),
                                         TextButton(
@@ -220,7 +221,6 @@ class _viewFullBookpaiState extends State<viewFullBookpai> {
                                     );
                                   },
                                 );
-                              
                               } else if (s == false) {
                                 return showDialog<void>(
                                   context: context,

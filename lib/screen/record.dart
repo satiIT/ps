@@ -59,7 +59,7 @@ class _recordState extends State<record> {
                             //   color: Color.fromRGBO(255, 254, 229, 1),
                             child: Center(
                                 child: Text(' Name OF Illness : ' +
-                                    data['illnessName'])),
+                                    data['illnessName'],style: TextStyle(fontSize: 20))),
                           ),
                         ),
                         SizedBox(
@@ -72,14 +72,14 @@ class _recordState extends State<record> {
                             child: Center(
                                 child: data['hospital'] == null
                                     ? Text('no Data')
-                                    : Text('hospital  : ' + data['hospital'])),
+                                    : Text('hospital  : ' + data['hospital'],style: TextStyle(fontSize: 20))),
                           ),
                         ),
                         SizedBox(
                           height: 20,
                         ),
                         Container(
-                          height: 20,
+                          height: 40,
                           child: Card(
                             //     color: Color.fromRGBO(255, 254, 229, 1),
 
@@ -89,7 +89,7 @@ class _recordState extends State<record> {
                                   child: data['date'] == null
                                       ? Text('no Data')
                                       : Text('Date  : ' +
-                                          data['date'].toDate().toString())),
+                                          data['date'].toDate().toString(),style: TextStyle(fontSize: 20))),
                             ),
                           ),
                         ),
@@ -112,21 +112,21 @@ class _recordState extends State<record> {
                                             child: Card(
                                                 child: Center(
                                                     child: Text(
-                                                        'Name Of Diagnoses : ' +
-                                                            n[index])))),
-                                                         index >= s.length?
-                                                        
-                                                         Text('No Images'):
-                                        InkWell(
-                                          child: Image.network(s[index]),
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        imgv(s[index])));
-                                          },
-                                        ),
+                                              'Name Of Diagnoses : ' + n[index],
+                                              style: TextStyle(fontSize: 20),
+                                            )))),
+                                        index >= s.length
+                                            ? Text('No Images')
+                                            : InkWell(
+                                                child: Image.network(s[index]),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              imgv(s[index])));
+                                                },
+                                              ),
                                         SizedBox(
                                           height: 20,
                                         ),
@@ -146,9 +146,9 @@ class _recordState extends State<record> {
                             child: Center(
                               ///     color: Color.fromRGBO(255, 254, 229, 1),
                               child: data['medicine'] == null
-                                  ? Text('No Data')
+                                  ? Text('No Data',style: TextStyle(fontSize: 20),)
                                   : Text('Medicine : ' +
-                                      data['medicine'].toString()),
+                                      data['medicine'].toString(),style: TextStyle(fontSize: 20)),
                             ),
                           ),
                         ),
@@ -161,7 +161,7 @@ class _recordState extends State<record> {
                           child: Card(
                             child: Center(
                                 child: data['chronic'] == true
-                                    ? Text('Chonic')
+                                    ? Text('Chonic',style: TextStyle(fontSize: 20))
                                     : Text('')),
                           ),
                         ),
@@ -174,7 +174,7 @@ class _recordState extends State<record> {
                           child: Card(
                             child: Center(
                               child: data['surgery'] == true
-                                  ? Text('Need surgery ')
+                                  ? Text('Need surgery ',style: TextStyle(fontSize: 20))
                                   : Text(''),
                             ),
                           ),
@@ -188,7 +188,11 @@ class _recordState extends State<record> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => addNewdiag('users/$oid/record',document.id,data['diagnoses'],data['digimg'])));
+                                        builder: (context) => addNewdiag(
+                                            'users/$oid/record',
+                                            document.id,
+                                            data['diagnoses'],
+                                            data['digimg'])));
                               },
                               child: Text("add diagnoses")),
                         )

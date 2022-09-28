@@ -35,7 +35,7 @@ class _viewBookingResState extends State<viewBookingRes> {
             .collection('booking')
             .where('doctorEmail', isEqualTo: doctorEmail)
             .where('hospitalID', isEqualTo: int.parse(hospitalID))
-       //     .where('date', isEqualTo: DateTime.now())
+            //     .where('date', isEqualTo: DateTime.now())
             .snapshots();
       }
     });
@@ -93,7 +93,8 @@ class _viewBookingResState extends State<viewBookingRes> {
                           child: Center(
                             child: Text(
                               data['patientName'],
-                              style: TextStyle(color: Colors.black),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
                             ),
                           ),
                         ),

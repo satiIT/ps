@@ -76,7 +76,7 @@ class _bookingState extends State<booking> {
                             child: Center(
                               child: Text(
                                 data['name'],
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black,fontSize: 20),
                               ),
                             ),
                           ),

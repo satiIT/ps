@@ -71,7 +71,7 @@ class _viewfullbookState extends State<viewfullbook> {
                         child: Center(
                           child: Text(
                             'hospital Name : ' + data['hospitalName'],
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black,fontSize: 20),
                           ),
                         ),
                       ),
@@ -88,7 +88,7 @@ class _viewfullbookState extends State<viewfullbook> {
                         child: Center(
                           child: Text(
                             'Doctor Name  :  ' + data['doctorName'],
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black,fontSize: 20),
                           ),
                         ),
                       ),
@@ -105,7 +105,7 @@ class _viewfullbookState extends State<viewfullbook> {
                         child: Center(
                           child: Text(
                             'patien Name  :  ' + data['patientName'],
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black,fontSize: 20),
                           ),
                         ),
                       ),
@@ -122,7 +122,7 @@ class _viewfullbookState extends State<viewfullbook> {
                         child: Center(
                           child: Text(
                             'Date  :  ' + data['date'].toDate().toString(),
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black,fontSize: 20),
                           ),
                         ),
                       ),

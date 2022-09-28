@@ -74,7 +74,7 @@ class _viewBookingForPatienState extends State<viewBookingForPatien> {
                                       viewFullBookpai(document.id, ide))));
                         }),
                         child: Container(
-                          height: 45,
+                          height: 60,
                           width: 350,
                           //color: Colors.amber,
                           decoration: BoxDecoration(
@@ -86,11 +86,11 @@ class _viewBookingForPatienState extends State<viewBookingForPatien> {
                               children: [
                                 Text(
                                   data['hospitalName'],
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.black,fontSize: 20),
                                 ),
                                 Text(
                                   data['date'].toDate().toString(),
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.black,fontSize: 20),
                                 ),
                               ],
                             ),
